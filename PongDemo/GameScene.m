@@ -81,6 +81,7 @@ static const CGFloat kTracePixelPerSecond = 1000;
     for (UITouch *touch in touches) {
         CGPoint p  = [touch locationInNode:self];
         NSLog(@"\n%f %f %f %f", p.x, p.y, self.frame.size.width, self.frame.size.height);
+        NSLog(@"\n%f %f %f", self.frame.size.width, self.frame.size.width * 0.3, self.frame.size.width * 0.7);
         if (p.x < self.frame.size.width * 0.3) {
             self.leftPaddleMotivatingTouch = touch;
             NSLog(@"left paddle");
@@ -96,13 +97,26 @@ static const CGFloat kTracePixelPerSecond = 1000;
     [self trackPaddlesToMotivatingTouches];
 }
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    for (UITouch *t in touches) {[self touchMovedToPoint:[t locationInNode:self]];}
+    [self trackPaddlesToMotivatingTouches];
+//    for (UITouch *t in touches) {[self touchMovedToPoint:[t locationInNode:self]];}
 }
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    for (UITouch *t in touches) {[self touchUpAtPoint:[t locationInNode:self]];}
+    if ([touches containsObject:self.leftPaddleMotivatingTouch]) {
+        self.leftPaddleMotivatingTouch = nil;
+    }
+    if ([touches containsObject:self.rightPaddleMotivatingTouch]) {
+        self.rightPaddleMotivatingTouch = nil;
+    }
+//    for (UITouch *t in touches) {[self touchUpAtPoint:[t locationInNode:self]];}
 }
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    for (UITouch *t in touches) {[self touchUpAtPoint:[t locationInNode:self]];}
+    if ([touches containsObject:self.leftPaddleMotivatingTouch]) {
+        self.leftPaddleMotivatingTouch = nil;
+    }
+    if ([touches containsObject:self.rightPaddleMotivatingTouch]) {
+        self.rightPaddleMotivatingTouch = nil;
+    }
+//    for (UITouch *t in touches) {[self touchUpAtPoint:[t locationInNode:self]];}
 }
 
 
